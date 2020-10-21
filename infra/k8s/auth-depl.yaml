@@ -13,8 +13,9 @@ spec:
         app: auth
     spec:
       containers:
+        # image built on GCP
         - name: auth
-          image: rayjc/auth
+          image: us.gcr.io/ticketing-dev-293210/auth
 ---
 apiVersion: v1
 kind: Service
