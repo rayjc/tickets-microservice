@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Password } from '../helpers/Password';
 
 // interface describing the properties
 // required to create a new User
@@ -30,6 +31,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   }
+});
+
+// Intercept password write
+// Note: binding this to function
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.hash(this.get('password'));
+    this.set('password', hashed);
+  }
+
+  done();
 });
 
 // static makeUser method abstract User away for type checking
