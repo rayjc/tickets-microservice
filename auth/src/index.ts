@@ -17,10 +17,11 @@ app.set('trust proxy', true);   // behind ingress-nginx
 app.use(json());
 app.use(
   cookieSession({
+    // note: js access is disabled on default
     // unencrypted in case other services are in different lanuage
     signed: false,
     // enable TCP
-    secure: true
+    secure: true,
   })
 );
 app.use(morgan("dev"));
