@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../config';
 import { User } from '../models/User';
-import { RequestValidationError } from '../errors/RequestValidationError';
 import { BadRequestError } from '../errors/BadRequestError';
+import { validateRequest } from '../middlewares/validate-request';
 
 const router = express.Router();
 
@@ -15,12 +15,8 @@ router.post(
     body('password').trim().isLength({ min: 4, max: 20 })
       .withMessage('Password must have 4-20 characters')
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
     // check for duplicate user
     const existingUser = await User.findOne({ email });

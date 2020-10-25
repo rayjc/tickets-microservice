@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Password } from '../helpers/Password';
+import { PasswordManager } from '../helpers/PasswordManager';
 
 // interface describing the properties
 // required to create a new User
@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
 // Note: binding this to function
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
-    const hashed = await Password.hash(this.get('password'));
+    const hashed = await PasswordManager.hash(this.get('password'));
     this.set('password', hashed);
   }
 
