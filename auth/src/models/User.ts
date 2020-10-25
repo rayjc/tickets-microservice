@@ -31,6 +31,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   }
+}, {
+  // filter out and format return object
+  // violating MVC slightly; should perhaps be in view...
+  toJSON: {
+    transform(doc, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.password;
+    },
+    versionKey: false,
+  }
 });
 
 // Intercept password write

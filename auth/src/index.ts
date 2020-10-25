@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import cookieSession from 'cookie-session';
 
 import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
@@ -12,7 +13,16 @@ import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/NotFoundError';
 
 const app = express();
+app.set('trust proxy', true);   // behind ingress-nginx
 app.use(json());
+app.use(
+  cookieSession({
+    // unencrypted in case other services are in different lanuage
+    signed: false,
+    // enable TCP
+    secure: true
+  })
+);
 app.use(morgan("dev"));
 
 app.use(currentUserRouter);
