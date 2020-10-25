@@ -16,6 +16,13 @@ spec:
         # image built on GCP
         - name: auth
           image: us.gcr.io/ticketing-dev-293210/auth
+          env:
+            # get value from secret object
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
