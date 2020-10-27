@@ -20,7 +20,7 @@ app.use(
     // unencrypted in case other services are in different lanuage
     signed: false,
     // enable TCP
-    secure: true,
+    secure: process.env.NODE_ENV !== "test",
   })
 );
 app.use(morgan("dev"));
