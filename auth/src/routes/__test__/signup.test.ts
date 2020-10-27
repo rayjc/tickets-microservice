@@ -74,4 +74,6 @@ it('sets a cookie on successful signup', async () => {
     .expect(201);
 
   expect(resp.get('Set-Cookie')).toBeDefined();
+  expect(resp.get('Set-Cookie')[0]).toContain('express:');
+  expect(resp.get('Set-Cookie')[0]).toContain('httponly');
 });
