@@ -19,7 +19,7 @@ app.use(
     // note: js access is disabled on default
     // unencrypted in case other services are in different lanuage
     signed: false,
-    // enable TCP
+    // enable TCP; remember to load frontend with https
     secure: process.env.NODE_ENV !== "test",
   })
 );
