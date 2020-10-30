@@ -4,7 +4,10 @@ import { json } from 'body-parser';
 import morgan from 'morgan';
 import cookieSession from 'cookie-session';
 
-import { errorHandler, NotFoundError } from '@rayjc-dev/common';
+import { errorHandler, NotFoundError, currentUser } from '@rayjc-dev/common';
+import { JWT_KEY } from './config';
+import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
 
 const app = express();
 app.set('trust proxy', true);   // behind ingress-nginx
@@ -20,6 +23,10 @@ app.use(
 );
 app.use(morgan("dev"));
 
+app.use(currentUser(JWT_KEY));
+
+app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 // 404 error
 app.all('*', async () => {
