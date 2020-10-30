@@ -17,6 +17,8 @@ spec:
         - name: auth
           image: us.gcr.io/ticketing-dev-293210/auth
           env:
+            - name: MONGODB_URI
+              value: mongodb://auth-mongo-srv:27017/auth
             # get value from secret object
             - name: JWT_KEY
               valueFrom:
