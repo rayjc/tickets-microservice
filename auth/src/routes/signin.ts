@@ -2,9 +2,8 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../config';
-import { validateRequest } from '../middlewares/validate-request';
+import { BadRequestError, validateRequest } from '@rayjc-dev/common';
 import { User } from '../models/User';
-import { BadRequestError } from '../errors/BadRequestError';
 import { PasswordManager } from '../helpers/PasswordManager';
 
 const router = express.Router();
