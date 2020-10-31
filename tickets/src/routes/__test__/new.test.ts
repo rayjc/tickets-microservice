@@ -21,7 +21,7 @@ it('returns a status other than 401 if user is signed in', async () => {
   expect(resp.status).not.toBe(401);
 });
 
-describe('test field validation', async () => {
+describe('test field validation', () => {
   it('returns an error if an invalid title is provided', async () => {
     const resp = await request(app).post('/api/tickets')
       .set('Cookie', signin())

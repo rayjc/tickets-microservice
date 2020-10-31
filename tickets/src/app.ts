@@ -9,6 +9,7 @@ import { JWT_KEY } from './config';
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/show';
 import { indexTicketRouter } from './routes/index';
+import { UpdateTicketRouter } from './routes/update';
 
 const app = express();
 app.set('trust proxy', true);   // behind ingress-nginx
@@ -29,6 +30,7 @@ app.use(currentUser(JWT_KEY));
 app.use(createTicketRouter);
 app.use(showTicketRouter);
 app.use(indexTicketRouter);
+app.use(UpdateTicketRouter);
 
 // 404 error
 app.all('*', async () => {
