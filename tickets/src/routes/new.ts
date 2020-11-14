@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { requireAuth, validateRequest } from '@rayjc-dev/common';
 import { Ticket } from '../models/ticket';
+import { TicketCreatedPublisher } from '../events/publishers/TicketCreatedPublisher';
+import { natsWrapper } from '../NatsWrapper';
 
 const router = express.Router();
 
@@ -21,6 +23,13 @@ router.post('/api/tickets',
       userId: req.currentUser!.id
     });
     await ticket.save();
+    // publish sanitized/saved data
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.status(201).json(ticket);
   }
