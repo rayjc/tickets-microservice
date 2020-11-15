@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 import { app } from './app';
-import { MONGODB_URI } from './config';
+import { MONGODB_URI, NATS_CLIENT_ID, NATS_CLUSTER_ID, NATS_URL } from './config';
 import { natsWrapper } from './NatsWrapper';
 
 const init = async () => {
   try {
-    await natsWrapper.connect('ticketing', 'some_id', 'http://nats-srv:4222');
+    await natsWrapper.connect(NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL);
     // could consider moving clean up to a natsWrapper method
     // though prefer to exit process at top level
     natsWrapper.client.on('close', () => {
