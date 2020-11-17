@@ -1,18 +1,18 @@
 import mongoose, { mongo } from 'mongoose';
 import { OrderStatus } from '@rayjc-dev/common';
-import { TicketDoc } from './ticket';
+import { TicketDoc } from './TicketDoc';
 
 interface OrderAttrs {
   userId: string;
   status: OrderStatus;
-  expresAt: Date;
+  expiresAt: Date;
   ticket: TicketDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
   userId: string;
   status: OrderStatus;
-  expresAt: Date;
+  expiresAt: Date;
   ticket: TicketDoc;
 }
 
