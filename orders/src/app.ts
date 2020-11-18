@@ -9,7 +9,7 @@ import { JWT_KEY } from './config';
 import { newOrderRouter } from './routes/new';
 import { showOrderRouter } from './routes/show';
 import { indexOrderRouter } from './routes/index';
-import { deleteOrderRouter } from './routes/delete';
+import { cancelOrderRouter } from './routes/update';
 
 const app = express();
 app.set('trust proxy', true);   // behind ingress-nginx
@@ -30,7 +30,7 @@ app.use(currentUser(JWT_KEY));
 app.use(indexOrderRouter);
 app.use(showOrderRouter);
 app.use(newOrderRouter);
-app.use(deleteOrderRouter);
+app.use(cancelOrderRouter);
 
 // 404 error
 app.all('*', async () => {
