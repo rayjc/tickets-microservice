@@ -31,15 +31,13 @@ const ticketSchema = new mongoose.Schema({
   }
 });
 
-const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
-
 ticketSchema.statics.make = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
 };
 ticketSchema.methods.isReserved = async function () {
   // note: need to create new scope for 'this'
   // this === the ticket document that isReserved is called on
-  
+
   // check for existing order where status is not cancelled
   const existingOrder = await Order.findOne({
     ticket: this,
@@ -54,5 +52,7 @@ ticketSchema.methods.isReserved = async function () {
 
   return !!existingOrder;
 };
+
+const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
 
 export { Ticket };
