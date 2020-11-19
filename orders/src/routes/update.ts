@@ -1,13 +1,15 @@
 import express, { Request, Response } from 'express';
 import { requireAuth, OrderStatus, NotFoundError, NotAuthorizedError } from '@rayjc-dev/common';
 import { Order } from '../models/order';
+import { OrderCancelledPublisher } from '../events/publishers/OrderCancelledPublisher';
+import { natsWrapper } from '../NatsWrapper';
 
 const router = express.Router();
 
 router.patch('/api/orders/:orderId', requireAuth, async (req: Request, res: Response) => {
   const { orderId } = req.params;
 
-  const order = await Order.findById(orderId);
+  const order = await Order.findById(orderId).populate('ticket');
 
   if (!order) {
     throw new NotFoundError();
@@ -20,7 +22,13 @@ router.patch('/api/orders/:orderId', requireAuth, async (req: Request, res: Resp
   order.status = OrderStatus.Cancelled;
   await order.save();
 
-  // TODO: publish event
+  // publish event
+  new OrderCancelledPublisher(natsWrapper.client).publish({
+    id: order.id,
+    ticket: {
+      id: order.ticket.id,
+    }
+  });
 
   res.json(order);
 });

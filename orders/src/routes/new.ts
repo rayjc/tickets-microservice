@@ -5,6 +5,8 @@ import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
 import { Order } from '../models/order';
 import { EXPIRATION_WINDOW_SECONDS } from '../config';
+import { OrderCreatedPublisher } from '../events/publishers/OrderCreatedPublisher';
+import { natsWrapper } from '../NatsWrapper';
 
 const router = express.Router();
 
@@ -50,6 +52,18 @@ router.post(
     await order.save();
 
     // publish event
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      // note do not cast Date() to string directly,
+      // use toISOString() to avoid saving in local time zone
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price,
+      }
+    });
 
     return res.status(201).json(order);
   });
