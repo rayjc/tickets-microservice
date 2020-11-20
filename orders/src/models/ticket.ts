@@ -4,6 +4,7 @@ import { OrderStatus } from '@rayjc-dev/common';
 import { Order } from './order';
 
 interface TicketAttrs {
+  id: string;
   title: string;
   price: number;
 }
@@ -32,7 +33,12 @@ const ticketSchema = new mongoose.Schema({
 });
 
 ticketSchema.statics.make = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
+  const { id, ...remainingAttrs } = attrs;
+  // store id as _id
+  return new Ticket({
+    _id: id,
+    ...remainingAttrs
+  });
 };
 ticketSchema.methods.isReserved = async function () {
   // note: need to create new scope for 'this'

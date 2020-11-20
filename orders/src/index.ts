@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import { app } from './app';
 import { MONGODB_URI, NATS_CLIENT_ID, NATS_CLUSTER_ID, NATS_URL } from './config';
 import { natsWrapper } from './NatsWrapper';
+import { TicketCreatedListener } from './events/listeners/TicketCreatedListener';
+import { TicketUpdatedListener } from './events/listeners/TicketUpdatedListener';
 
 const init = async () => {
   try {
@@ -16,6 +18,11 @@ const init = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
 
+    // instantiate event listeners
+    new TicketCreatedListener(natsWrapper.client).listen();
+    new TicketUpdatedListener(natsWrapper.client).listen();
+
+    // connect db
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
