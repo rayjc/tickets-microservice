@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest, NotAuthorizedError, NotFoundError, requireAuth } from '@rayjc-dev/common';
+import { validateRequest, NotAuthorizedError, NotFoundError, requireAuth, BadRequestError } from '@rayjc-dev/common';
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/TicketUpdatedPublisher';
 import { natsWrapper } from '../NatsWrapper';
@@ -24,6 +24,10 @@ router.put(
     // currentUser must be defined with requireAuth middleware
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError("Cannot edit a reserved ticket.");
     }
 
     ticket.set({
