@@ -5,6 +5,7 @@ import { MONGODB_URI, NATS_CLIENT_ID, NATS_CLUSTER_ID, NATS_URL } from './config
 import { natsWrapper } from './NatsWrapper';
 import { TicketCreatedListener } from './events/listeners/TicketCreatedListener';
 import { TicketUpdatedListener } from './events/listeners/TicketUpdatedListener';
+import { ExpirationCompleteListener } from './events/listeners/ExpirationCompleteListener';
 
 const init = async () => {
   try {
@@ -21,6 +22,7 @@ const init = async () => {
     // instantiate event listeners
     new TicketCreatedListener(natsWrapper.client).listen();
     new TicketUpdatedListener(natsWrapper.client).listen();
+    new ExpirationCompleteListener(natsWrapper.client).listen();
 
     // connect db
     await mongoose.connect(MONGODB_URI, {
