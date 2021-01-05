@@ -12,8 +12,6 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
     const ticket = Ticket.make({ id, title, price });
     await ticket.save();
 
-    console.log(await Ticket.findById(id));
-
     msg.ack();
   }
 }
