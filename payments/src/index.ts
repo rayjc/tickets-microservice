@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import { app } from './app';
 import { MONGODB_URI, NATS_CLIENT_ID, NATS_CLUSTER_ID, NATS_URL } from './config';
+import { OrderCreatedListener } from './events/listeners/OrderCreatedListener';
 import { natsWrapper } from './NatsWrapper';
 
 const init = async () => {
@@ -15,6 +16,9 @@ const init = async () => {
     });
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCreatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
