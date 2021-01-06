@@ -22,6 +22,10 @@ spec:
             backend:
               serviceName: orders-srv
               servicePort: 3000
+          - path: /api/payments/?(.*)
+            backend:
+              serviceName: payments-srv
+              servicePort: 3000
           # match all other routes to frontend
           - path: /?(.*)
             backend:
