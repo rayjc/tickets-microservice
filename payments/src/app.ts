@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import morgan from 'morgan';
 import cookieSession from 'cookie-session';
+import { createChargeRouter } from './routes/new';
 
 import { errorHandler, NotFoundError, currentUser } from '@rayjc-dev/common';
 import { JWT_KEY } from './config';
@@ -22,6 +23,9 @@ app.use(
 app.use(morgan("dev"));
 
 app.use(currentUser(JWT_KEY));
+
+
+app.use(createChargeRouter);
 
 
 // 404 error
