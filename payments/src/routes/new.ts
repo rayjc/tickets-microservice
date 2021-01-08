@@ -2,6 +2,7 @@ import { BadRequestError, NotAuthorizedError, NotFoundError, OrderStatus, requir
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Order } from '../models/order';
+import { stripe } from '../stripe';
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post('/api/payments',
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { token, orderId} = req.body;
+    const { token, orderId } = req.body;
 
     const order = await Order.findById(orderId);
 
@@ -30,7 +31,13 @@ router.post('/api/payments',
       throw new BadRequestError('Cannot pay for a cancelled order');
     }
 
-    res.json({ success: true });
+    await stripe.charges.create({
+      currency: 'usd',
+      amount: order.price * 100,  // convert to cents
+      source: token
+    });
+
+    res.status(201).json({ success: true });
   }
 );
 
