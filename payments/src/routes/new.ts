@@ -1,8 +1,10 @@
 import { BadRequestError, NotAuthorizedError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@rayjc-dev/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import { PaymentCreatedPublisher } from '../events/publishers/PaymentCreatedPublisher';
 import { Order } from '../models/order';
 import { Payment } from '../models/payment';
+import { natsWrapper } from '../NatsWrapper';
 import { stripe } from '../stripe';
 
 const router = express.Router();
@@ -44,7 +46,13 @@ router.post('/api/payments',
     });
     await payment.save();
 
-    res.status(201).json({ success: true });
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId
+    });
+
+    res.status(201).json(payment);
   }
 );
 
