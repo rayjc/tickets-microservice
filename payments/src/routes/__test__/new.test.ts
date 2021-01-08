@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../../app';
 import { Order } from '../../models/order';
+import { Payment } from '../../models/payment';
 import { signin } from '../../test/helpers';
 import { stripe } from '../../stripe';
 
@@ -58,7 +59,7 @@ it('returns 400 when purchasing a cancelled order', async () => {
     .expect(400);
 });
 
-it('returns a 201 given valid input', async () => {
+it('returns a 201 and charge/payment has been made given valid input', async () => {
   const userId = mongoose.Types.ObjectId().toHexString();
   const price = Math.floor(Math.random() * 1000);
   const order = Order.make({
@@ -89,4 +90,11 @@ it('returns a 201 given valid input', async () => {
 
   expect(stripeCharge).toBeDefined();
   expect(stripeCharge!.currency).toEqual('usd');
+
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: stripeCharge!.id
+  });
+
+  expect(payment).not.toBeNull();
 });
