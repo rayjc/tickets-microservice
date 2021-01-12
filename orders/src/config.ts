@@ -9,4 +9,4 @@ export const QUEUE_GROUP_NAME = process.env.QUEUE_GROUP_NAME || 'orders-service'
 
 export const EXPIRATION_WINDOW_SECONDS = process.env.EXPIRATION_WINDOW_SECONDS
   ? +process.env.EXPIRATION_WINDOW_SECONDS
-  : 15 * 60;
+  : 5 * 60;
