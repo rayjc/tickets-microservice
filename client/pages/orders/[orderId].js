@@ -1,7 +1,18 @@
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import StripeCheckout from 'react-stripe-checkout';
+import useRequest from '../../hooks/use-request';
 
-const OrderShow = ({ order }) => {
+const OrderShow = ({ order, currentUser }) => {
   const [timeRemaining, setTimeRemaining] = useState(0);
+  const { doRequest, errors } = useRequest({
+    url: '/api/payments',
+    method: 'post',
+    body: {
+      orderId: order.id,
+    },
+    onSuccess: (payment) => console.log(payment)
+  });
 
   useEffect(() => {
     const findTimeRemaining = () => {
@@ -23,7 +34,24 @@ const OrderShow = ({ order }) => {
   }
 
   return (
-    <div>Reserving for {timeRemaining} seconds</div>
+    <>
+      <div>
+        Reserving for {timeRemaining} seconds
+      </div>
+      <p>
+        You may use any credit card number listed at
+        <Link href="https://stripe.com/docs/testing#cards" passHref={true}>
+          <a>Stripe</a>
+        </Link> for testing
+      </p>
+      <StripeCheckout
+        token={({ id }) => doRequest({ token: id })}
+        stripeKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY}
+        amount={order.ticket.price * 100}
+        email={currentUser.email}
+      />
+      {errors}
+    </>
   );
 };
 
