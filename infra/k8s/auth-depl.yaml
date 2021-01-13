@@ -13,9 +13,8 @@ spec:
         app: auth
     spec:
       containers:
-        # image built on GCP
         - name: auth
-          image: us.gcr.io/ticketing-dev-293210/auth
+          image: rayjc/auth
           env:
             - name: MONGODB_URI
               value: mongodb://auth-mongo-srv:27017/auth

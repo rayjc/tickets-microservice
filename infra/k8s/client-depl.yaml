@@ -13,9 +13,8 @@ spec:
         app: client
     spec:
       containers:
-        # image built on GCP
         - name: client
-          image: us.gcr.io/ticketing-dev-293210/client
+          image: rayjc/client
 ---
 apiVersion: v1
 kind: Service

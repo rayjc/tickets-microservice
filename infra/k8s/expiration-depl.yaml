@@ -13,9 +13,8 @@ spec:
         app: expiration
     spec:
       containers:
-        # image built on GCP
         - name: expiration
-          image: us.gcr.io/ticketing-dev-293210/expiration
+          image: rayjc/expiration
           env:
             # assign same name as pod
             - name: NATS_CLIENT_ID

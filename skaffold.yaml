@@ -5,12 +5,12 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: ticketing-dev-293210
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: ticketing-dev-293210
   artifacts:
-    - image: us.gcr.io/ticketing-dev-293210/auth
+    - image: rayjc/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -18,7 +18,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/ticketing-dev-293210/tickets
+    - image: rayjc/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
@@ -26,7 +26,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/ticketing-dev-293210/orders
+    - image: rayjc/orders
       context: orders
       docker:
         dockerfile: Dockerfile
@@ -34,7 +34,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/ticketing-dev-293210/payments
+    - image: rayjc/payments
       context: payments
       docker:
         dockerfile: Dockerfile
@@ -42,7 +42,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/ticketing-dev-293210/expiration
+    - image: rayjc/expiration
       context: expiration
       docker:
         dockerfile: Dockerfile
@@ -50,7 +50,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/ticketing-dev-293210/client
+    - image: rayjc/client
       context: client
       docker:
         dockerfile: Dockerfile

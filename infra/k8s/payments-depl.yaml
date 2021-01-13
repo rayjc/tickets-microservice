@@ -13,9 +13,8 @@ spec:
         app: payments
     spec:
       containers:
-        # image built on GCP
         - name: payments
-          image: us.gcr.io/ticketing-dev-293210/payments
+          image: rayjc/payments
           env:
             # assign same name as pod
             - name: NATS_CLIENT_ID
