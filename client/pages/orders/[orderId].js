@@ -30,18 +30,18 @@ const OrderShow = ({ order, currentUser }) => {
     };
   }, [order]);
 
-  if (timeLeft < 0) {
+  if (timeRemaining < 0) {
     return <div>Order Expired</div>;
   }
 
   return (
     <>
       <div>
-        Reserving for {timeRemaining} seconds
+        Reserving ticket for <b>{timeRemaining}</b> seconds...
       </div>
+      <br />
       <p>
-        You may use any credit card number listed at
-        <Link href="https://stripe.com/docs/testing#cards" passHref={true}>
+        You may use any credit card number listed at <Link href="https://stripe.com/docs/testing#cards" passHref={true}>
           <a>Stripe</a>
         </Link> for testing
       </p>
