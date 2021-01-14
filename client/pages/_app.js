@@ -1,10 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import Head from 'next/head';
 import buildClient from '../api/build-client';
 import Header from '../components/header';
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TicketPro</title>
+      </Head>
       <Header currentUser={currentUser} />
       <div className="container bg-white">
         <Component currentUser={currentUser} {...pageProps} />
