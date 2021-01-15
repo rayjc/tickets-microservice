@@ -4,6 +4,7 @@ import { app } from './app';
 import { MONGODB_URI } from './config';
 
 const init = async () => {
+  console.log("Starting server...");
   try {
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
