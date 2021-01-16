@@ -17,7 +17,9 @@ app.use(
     // unencrypted in case other services are in different lanuage
     signed: false,
     // enable TCP; remember to load frontend with https
-    secure: process.env.NODE_ENV !== "test",
+    // secure: process.env.NODE_ENV !== "test",
+    // allow http for initial deploy
+    secure: false,
   })
 );
 app.use(morgan("dev"));
