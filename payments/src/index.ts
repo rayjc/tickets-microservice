@@ -6,6 +6,7 @@ import { OrderCreatedListener } from './events/listeners/OrderCreatedListener';
 import { natsWrapper } from './NatsWrapper';
 
 const init = async () => {
+  console.log("Starting server...");
   try {
     await natsWrapper.connect(NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL);
     // could consider moving clean up to a natsWrapper method
