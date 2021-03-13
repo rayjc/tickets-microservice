@@ -1,7 +1,7 @@
 # [TicketPro](www.ticketpro-app.com/)
 
 ### Overview
-TicketPro is a full stack web application for selling and purchasing tickets. It is meant to be a clone of Ticketmaster to practice and showcase my skills in event-driven mircroservice architecture. It is deployed as a Kubernetes cluster via Digital Ocean and it lives [here](www.ticketpro-app.com/)!
+TicketPro is a full stack web application for selling and purchasing tickets. It is meant to be a clone of Ticketmaster to practice and showcase my skills in event-driven mircroservice architecture. ~~It is deployed as a Kubernetes cluster via Digital Ocean and it lives [here](www.ticketpro-app.com/)!~~
 
 ### Features
 - Event-driver microservice with optimistic concurrency control
